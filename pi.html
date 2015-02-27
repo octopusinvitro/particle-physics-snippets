@@ -1,0 +1,118 @@
+---
+layout: default
+title: PI calculation
+menuname: PI
+description: An Approximation of PI with random numbers.
+permalink: /pi/
+prism: true
+mathjax: true
+---
+		<div class="wrapper">
+
+			<h1>{{ page.title }}</h1>
+			<h2>with random numbers</h2>
+
+			<p class="hero">
+				<img src="{{ site.baseurl }}/img/hero.png" width="361" height="347" alt="Random PI">
+			</p>
+
+			<h3>Introduction</h3>
+
+			<p>The idea was to approximate the value of PI by filling a squared area with randomly generated points and checking which points fell into the circle contained in the square, given that the circle and the square have a ratio of areas that is &pi;/4,</p>
+
+			<p><img src="{{ site.baseurl }}/img/github.svg" width="32" height="32" alt="GitHub icon">
+			<a href="http://github.com/{{ site.git }}/{{ site.repo }}">Check the repo</a>.</p>
+			
+
+			<h3>The maths</h3>
+
+			<p>All you need to define a point in a 2-dimensional plane is a pair of coordinates:</p>
+			<ul>
+				<li>In <strong>rectangular (or Cartesian) coordinates</strong>, you can uniquely define a point by the pair (<em>X</em>, <em>Y</em>).</li>
+				<li>In <strong>cylindrical coordinates</strong>, a point is defined instead by a different pair of coordinates, (<em>&rho;</em>,<em>&phi;</em>), where <em>&rho;</em> represents the distance from the point to the origin of coordinates, and <em>&phi;</em> represents the angle of the point with the <em>X</em> axis<sup>[*]</sup>.</li>
+			</ul>
+
+			<p>You can easily transform from one system to the other if you write <em>X</em> and <em>Y</em> in terms of <em>&rho;</em> and <em>&phi;</em>:</p>
+
+			<p class="center">
+				<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>X</mi><mo>=</mo><mi>&#961;</mi><mi>cos</mi><mfenced><mi>&#966;</mi></mfenced></math>
+				<br>
+				<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>Y</mi><mo>=</mo><mi>&#961;</mi><mi>sin</mi><mfenced><mi>&#966;</mi></mfenced></math>
+			</p>
+
+			<p>We can also do the opposite and write the cylindrical coordinates in terms of the rectangular coordinates:</p>
+
+			<p class="center">
+				<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>&#961;</mi><mo>=</mo><msqrt><msup><mi>X</mi><mn>2</mn></msup><mo>+</mo><msup><mi>Y</mi><mn>2</mn></msup></msqrt></math>
+				<br>
+				<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>tan</mi><mfenced><mi>&#966;</mi></mfenced><mo>=</mo><mfrac><mi>Y</mi><mi>X</mi></mfrac></math>
+			</p>
+
+			<p>An image is worth a million words, so check this diagram:</p>
+
+			<p class="hero">
+				<img src="{{ site.baseurl }}/img/diagram.png" width="600" height="535" alt="Diagram of the cylindrical coordinates">
+			</p>
+			<p class="footnote">Image by Andeggs, Wikimedia Commons</p>
+
+			<p>In a circle, we can use the cylindrical coordinates to calculate things more easily. A circle has a fixed value of <em>&rho;</em> that we call radius (<em>r</em>), and the area of a circle is defined by:</p>
+
+			<p class="center">
+				<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>A</mi><mo>=</mo><mi>&#960;</mi><msup><mi>r</mi><mn>2</mn></msup></math>
+			</p>
+
+
+			<h3>The code</h3>
+
+			<p>The total number of points that we launch to fill the squared area are represented by <code class="language-cpp">ntot</code>, while <code class="language-cpp">nin</code> are the points that fall into the circle.</p>
+
+			<p>A random number is generated for the <em>X</em> and the <em>Y</em> coordinates. The maximum value returned by <code class="language-cpp">rand()</code> is defined as the constant <code class="language-cpp">RAND_MAX</code>. This value is library-dependent, but is guaranteed to be at least 32767 on any standard library implementation.</p>
+
+			<p>If the radius of the circle is 1, the area will be <em>&pi;</em>. So, first, we  generate a random number between 0 and 1, for which we call the <code class="language-cpp">rand()</code> function and divide by <code class="language-cpp">RAND_MAX</code> + 1:</p>
+
+			<pre><code class="language-cpp">double x = (double)rand() / (RAND_MAX + 1.0);
+double y = (double)rand() / (RAND_MAX + 1.0);</code></pre>
+
+			<p>This will generate points that fall into the first quadrant only. Then, we transform these random numbers so that they are laid over a circle of radius 1 centered in the origin of coordinates:</p>
+
+			<pre><code class="language-cpp">xc = (2*x) - 1;
+yc = (2*y) - 1;</code></pre>
+
+			<p>Now, to check if this point (X, Y) is inside the circle of radius <code>r = 1</code>, we calculate the squared radius of the circle that has <em>X</em> and <em>Y</em> values between 0 and 1:</p>
+
+			<p class="center">
+				<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>r</mi><mo>=</mo><msqrt><msup><mi>X</mi><mn>2</mn></msup><mo>+</mo><msup><mi>Y</mi><mn>2</mn></msup></msqrt></math></p>
+
+			<pre><code class="language-cpp">int nin = 0;
+double r = sqrt( (xc*xc) + (yc*yc) );
+	
+if (r <= 1)
+	nin++;</code></pre>
+
+			<p>Since the ratio of areas is proportional to &pi;/4 (i.e., nin/ntot = &pi;/4), we can calculate <em>&pi;</em> as:</p>
+
+			<pre><code class="language-cpp">double PI = 4*( (double)nin / (double)ntot );</code></pre>
+
+			<h4>Macros</h4>
+
+			<p>The first macro calculates random numbers up to 1e8. The second calculates from 1000 to 1e10 in steps of 10. The third calculates from 1e4 to 2e5 in steps of 1e4 and writes the results to a file. The results can be seen in this plot:</p>
+
+			<p class="hero">
+				<img src="{{ site.baseurl }}/img/piplot.png" width="643" height="349" alt="Plot of PI">
+			</p>
+
+			<p><img src="{{ site.baseurl }}/img/github.svg" width="32" height="32" alt="GitHub icon">
+			<a href="http://github.com/{{ site.git }}/{{ site.repo }}">Check the repo</a>.</p>
+
+			<p><img src="{{ site.baseurl }}/img/twitter.svg" width="32" height="32" alt="Twitter icon">
+			{% include share.html %}</p>
+			
+			<p class="footnote">[*] This is so in order to avoid confusion with spherical coordinates, where there is also a coordinate that represents the distance from the origin (<em>r</em>), and the angle with the <em>Z</em> axis (<em>&theta;</em>). The cylindrical coordinates are then (r, &theta;, &phi;), where <em>&rho;</em> = <em>r sen&theta;</em>, so, <br>
+<em>X</em> = <em>r</em> sen(<em>&theta;</em>) cos(<em>&phi;</em>),<br>
+<em>Y</em> = <em>r</em> sen(<em>&theta;</em>) sen(<em>&phi;</em>),<br>
+<em>Z</em> = <em>r</em> cos(<em>&theta;</em>)<br>
+				<img src="{{ site.baseurl }}/img/diagram.gif" width="260" height="191" alt="Spherical and cylindrical coordinates"></p>
+
+			<p class="date"><img src="{{ site.baseurl }}/img/clock.svg" width="24" height="24" alt="Calendar icon">        Published: 2004-05-27 19:56</p>
+			
+		</div>

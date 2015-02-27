@@ -1,0 +1,325 @@
+---
+layout: default
+title: Stopping Power Simulation
+menuname: Dosimetry
+description: Explanation of the physics behind this macro that calculates the stopping power of a particle entering a material.
+permalink: /dosimetry/
+prism: true
+mathjax: true
+---
+		<div class="wrapper">
+
+			<h1>Stopping Power Calculation</h1>
+			
+			<h3>Table of contents</h3>
+			<ul>
+				<li><a href="#intro">Introduction</a></li>
+				<li><a href="#code">The code</a>
+					<ul>
+						<li><a href="#trans">Translation of the formula</a></li>
+						<li><a href="#phys">Physics and code variables</a></li>
+					</ul></li>
+				<li><a href="#test">Test with real values</a>					
+				<li><a href="#more">More</a>
+			</ul>
+			
+			<p><img src="{{ site.baseurl }}/img/github.svg" width="32" height="32" alt="GitHub icon">
+			<a href="http://github.com/{{ site.git }}/{{ site.repo }}">Check the repo</a>.</p>
+			
+			<h3 id="intro">Introduction</h3>
+		
+			<p>Here we explain a bit of the physics behind this macro.</p>
+			
+			<p>According to the <a href="http://pdg.lbl.gov/2010/reviews/rpp2010-rev-passage-particles-matter.pdf">Particle Data Group</a>, a particle entering a material will have a mean rate of energy loss (also known as stopping power) defined by the (in)famous Bethe-Bloch formula:</p>
+			
+			<p class="center">
+				<math xmlns="http://www.w3.org/1998/Math/MathML"><mo>-</mo><mfrac><mrow><mi>d</mi><mi>E</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>=</mo><mi>K</mi><msup><mi>z</mi><mn>2</mn></msup><mfrac><mi>Z</mi><mi>A</mi></mfrac><mfrac><mn>1</mn><msup><mi>&#946;</mi><mn>2</mn></msup></mfrac><mfenced open="[" close="]"><mrow><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>ln</mi><mfrac><mrow><mn>2</mn><msub><mi>m</mi><mi>e</mi></msub><msup><mi>c</mi><mn>2</mn></msup><msup><mi>&#946;</mi><mn>2</mn></msup><msup><mi>&#947;</mi><mn>2</mn></msup><msub><mi>T</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub></mrow><msup><mi>I</mi><mn>2</mn></msup></mfrac><mo>-</mo><msup><mi>&#946;</mi><mrow><mn>2</mn><mo>&#160;</mo></mrow></msup></mrow></mfenced></math>
+			</p>
+			
+			<p>where <em>dE</em> represents the amount of energy <em>E</em> that is lost by the particle per unit of distance <em>dx</Em> traveled inside a material. Since it is a lost, the decrease is represented by a negative sign (-).</p>
+			
+			<p>What follows after the equal sign is a series of constants and parameters that define the particle and the material. Not all of them, only the ones that have an influence in the loss of energy. In the following table, these variables are introduced (the numbers in parentheses represent the error of the value):</p>
+			
+			<table>
+			
+				<thead class="zigzag">
+					<tr>
+						<th>Symbol</th>
+						<th>Definition</th>
+						<th>Units or value</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					<tr>
+						<td><em>E</em></td>
+						<td>Incident particle energy</td>
+						<td>MeV<sup>[*]</sup></td>
+					</tr>
+					<tr>
+						<td><em>K</em></td>
+						<td><em>4&pi;
+							N<sub>A</sub>
+							r<sub>e</sub><sup>2</sup> 
+							m<sub>e</sub> c<sup>2</sup></em>
+						</td>
+						<td>0.307 075 MeV cm<sup>2</sup> / g</td>
+					</tr>
+					<tr>
+						<td><em>z</em></td>
+						<td>Charge of the incident particle</td>
+						<td>unitless</td>
+					</tr>
+					<tr>
+						<td><em>Z</em></td>
+						<td>Atomic number of the material</td>
+						<td>unitless</td>
+					</tr>
+					<tr>
+						<td><em>A</em></td>
+						<td>Atomic mass of the material</td>
+						<td>g / mol</td>
+					</tr>
+					<tr>
+						<td><em>&beta;</em></td>
+						<td>velocity in terms of the speed of light c</td>
+						<td>unitless</td>
+					</tr>
+					<tr>
+						<td><em>&gamma;</em></td>
+						<td>Lorentz factor</td>
+						<td>unitless</td>
+					</tr>
+					<tr>
+						<td><em>m<sub>e</sub></em> c<sup>2</sup></td>
+						<td>Electron mass x c<sup>2</sup></td>
+						<td>0.510 998 918(44) MeV</td>
+					</tr>
+					<tr>
+						<td><em>T</em></td>
+						<td>Kinetic energy</td>
+						<td>MeV</td>
+					</tr>
+					<tr>
+						<td><em>I</em></td>
+						<td>Mean excitation energy</td>
+						<td>eV</td>
+					</tr>
+					
+				</tbody>
+
+			</table>
+			
+			<p class="footnote">[*] <a href="http://en.wikipedia.org/wiki/Electronvolt">Electron-volts</a> (eV) are often used as units of energy and mass in physics, using a system of <em>natural units</em> with <em>c</em> and <em>&hbar;</em> set to 1.</p>
+
+			
+			
+			<p>This beautiful formula looks something like this when we put real numbers in it. In this case, the values for muons in copper:</P>
+			
+			<img src="{{ site.baseurl }}/img/bethe.png" width="1164" height="733" alt="Bethe-Block formula for muons in copper">
+			
+			
+			
+			<h3 id="code">The code</h3>
+			
+			<h4 id="trans">Translation of the formula</h4>
+			
+			<p>The macros are written in C++. The function <code class="language-cpp">stoppingPower()</code> in <code>simulation1.cpp</code> and <code>simulation2.cpp</code> calculates this formula. To translate it to code, first we calculate gamma (the Lorentz factor), which depends on the energy of the particle:</p>			
+			<p class="center">
+				<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>&#947;</mi><mo>&#160;</mo><mo>=</mo><mo>&#160;</mo><mn>1</mn><mo>+</mo><mfrac><mi>E</mi><mi>m</mi></mfrac></math>
+			</p>
+			
+			<p>and so we have:</p>
+			<pre><code class="language-cpp">g = 1 + E/m;</code></pre>
+			
+			<p>We can then play with different particles by changing the value of the mass (<em>m</em>), or launch a particle with different values of energy (<em>E</em>), or combine both to make a study on different particles with different energies.</p>
+			
+			<p>Next, we calculate beta squared, the speed of the particle:</p>
+			<p class="center">
+				<math xmlns="http://www.w3.org/1998/Math/MathML"><msup><mi>&#946;</mi><mn>2</mn></msup><mo>&#160;</mo><mo>=</mo><mo>&#160;</mo><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><msup><mi>&#947;</mi><mn>2</mn></msup></mfrac></math>
+			</p>
+			
+			<p>which translates in the code to:</p>
+			<pre><code class="language-cpp">b2 = 1 - (1/(g*g));</code></pre>
+			
+			<p>The kinetic energy of the particle is defined by:</p>
+			<p class="center">
+				<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>T</mi><mo>&#160;</mo><mo>=</mo><mfrac><mrow><mn>2</mn><msub><mi>m</mi><mi>e</mi></msub><msup><mi>c</mi><mn>2</mn></msup><msup><mi>&#946;</mi><mn>2</mn></msup><msup><mi>&#947;</mi><mn>2</mn></msup></mrow><mrow><mn>1</mn><mo>+</mo><mn>2</mn><mi>&#947;</mi><mfrac><msub><mi>m</mi><mi>e</mi></msub><mi>m</mi></mfrac><mo>+</mo><msup><mfenced><mfrac><msub><mi>m</mi><mi>e</mi></msub><mi>m</mi></mfrac></mfenced><mn>2</mn></msup></mrow></mfrac></math>
+			</p>			
+			
+			<p>since <strong><em>m<sub>e</sub> c<sup>2</sup></em> &asymp; 0,511 MeV</strong>, and so <strong>2<em>m<sub>e</sub> c<sup>2</sup></em> = 1.022 MeV</strong>, we can shorten the expression for <em>T</em> like this:</p>
+			<pre><code class="language-cpp">T = (1.022*b2*g*g) / ( 1 + 2*g*(0.511/m) + pow(0.511/m,2) );</code></pre>
+			
+			<p>And finally, setting the value of the constant <em>K</em> as <code class="language-cpp">double k = 0.307075;</code> (see table), and calling the charge of the particle (<em>z</em>)  <code>q</code>,  we get to calculate the stopping power:</p>
+			<p class="center">
+				<math xmlns="http://www.w3.org/1998/Math/MathML"><mo>-</mo><mfrac><mrow><mi>d</mi><mi>E</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>=</mo><mi>K</mi><msup><mi>z</mi><mn>2</mn></msup><mfrac><mi>Z</mi><mi>A</mi></mfrac><mfrac><mn>1</mn><msup><mi>&#946;</mi><mn>2</mn></msup></mfrac><mfenced open="[" close="]"><mrow><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>ln</mi><mfrac><mrow><mn>2</mn><msub><mi>m</mi><mi>e</mi></msub><msup><mi>c</mi><mn>2</mn></msup><msup><mi>&#946;</mi><mn>2</mn></msup><msup><mi>&#947;</mi><mn>2</mn></msup><msub><mi>T</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub></mrow><msup><mi>I</mi><mn>2</mn></msup></mfrac><mo>-</mo><msup><mi>&#946;</mi><mrow><mn>2</mn><mo>&#160;</mo></mrow></msup></mrow></mfenced></math>
+			</p>
+			
+			<p>If the mass and energies are given in MeV, the distances in cm, and <em>A</em> in g / mol,  the units of the stopping power will be of <strong>MeV cm<sup>2</sup> / g</strong>. We can multiply the stopping power by <em>&rho;<sub>0</sub></em>, the density of the material in g / cm<sup>3</sup>, to have it in units of <strong>MeV / cm</strong>. That way, it will be more straight-forward to calculate the energy loss per unit of travelled distance. Multiplying the stopping power by the travelled distance will automatically give the energy lost by travelling that distance.</p>
+			
+			<p>The stopping power expression translated into code is:</p>
+			<pre><code class="language-cpp">SP = ((ro*k*q*q*Z)/(A*b2))*(0.5*log( (1.022*b2*g*g*T) / (I*I) ) - b2);</code></pre>
+			
+			<p>The final subroutine looks like this:</p>
+			<pre><code class="language-cpp">double stoppingPower(double m, double q, double E, double ro, double Z, double A, double I) {
+
+	double k = 0.307075;
+	double g, b2, T, SP;
+
+	printf("\n|******** Stopping-Power values for this material ********|\n");
+
+	g = 1 + (E/m);
+	printf("\n Gamma  =  %lf", g);
+
+	b2 = 1 - (1/(g*g));
+	printf("\n Beta squared  =  %lf", b2);
+
+	T = (1.022*b2*g*g) / (1 + 2*g*(0.511/m) + pow(0.511/m,2) );
+	printf("\n Maximum kinetic energy transferred  =  %lf MeV ", T);
+
+	SP = ((ro*k*q*q*Z)/(A*b2))*(0.5*log( (1.022*b2*g*g*T) / (I*I) ) - b2);
+	printf("\n Stopping Power  =  %lf MeV/cm \n", SP);
+
+	return SP;
+}</code></pre>
+
+			
+			<h4 id="phys">Physics and code variables</h4>
+			
+			<p>The simulation is simple: we have a material surrounded by air. At time 0, a particle enters a material of a certain thickness. To track the travelling of the particle in the material, we use <strong>steps</strong> of a fixed size. Inside a loop, we calculate how much energy the particle loses in each step, and determine if it is stopped inside the material or if it goes out, in which case we repeat the process to calculate the energy loss in air.</p>
+			
+			<p>Here is a diagram that shows what we have just said:</p>
+			
+			<p class="hero">
+				<img src="{{ site.baseurl }}/img/protonalair.png" width="281" height="197" alt="Diagram of a particle entering a material">
+			</p>
+			
+			<p>The first simulation uses the remaining distance to the exit <code>L</code>:</p>
+			<pre><code class="language-cpp">for(n = 0, L = thickness; L > 0 && E > 0; n++) {
+	E = E - SP*step;
+	L = thickness - n*step;
+}</code></pre>
+			
+			<p>where <code>n</code> is a counter for the number of steps, and we exit the loop when whether the particle is stopped (<code class="language-cpp">E > 0</code> condition) or it has abandoned the material (<code class="language-cpp">L > 0</code> condition).
+
+			<p>The second simulation uses the <code>range</code>:</p>
+			<pre><code class="language-cpp">for(n = 0; range < thickness && E > 0; n++) {
+	SP = stoppingPower(m, q, E, ro, Z, A, I, &G, &B, &t);
+	E = E - SP*step;
+	range += step;
+}</code></pre>
+			
+			<p>Also, the second simulation calculates the stopping power every time the energy changes. The first simulation doesn't because it is intended to be a rough approximation.</p>
+			
+
+
+			<h3 id="test">Test with real values</h3>
+			
+			<p>Play with the values of energy of the particle and thickness of the material to see what happens. Here is an example of a proton particle entering an aluminium foil. The values can be found in the <a href="http://en.wikipedia.org/wiki/Aluminium">Wikipedia</A> or in <a href="http://ie.lbl.gov/toimass.html">specialized publications</a>, just pay attention to the <strong>units</strong> and make the necessary <a href="http://www.digitaldutch.com/unitconverter/energy.htm">conversions</a>:</p>
+			
+			<table>
+			
+				<thead class="zigzag">
+					<tr>
+						<th>Parameter</th>
+						<th>Value</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					<tr>
+						<td colspan="2">Particle values (proton)</td>
+					</tr>
+					<tr>
+						<td>Mass (<em>m</em>)</td>
+						<td>938.272 MeV / c<sup>2</sup></td>
+					</tr>
+					<tr>
+						<td>Charge (<em>z</em> or <code>q</code>)</td>
+						<td>1 (in units of e)</td>
+					</tr>
+					<tr>
+						<td>Initial kinetic energy (<em>E</em>)</td>
+						<td>100 MeV<sup>[*]</sup></td>
+					</tr>
+					
+					<tr>
+						<td colspan="2">Material values (Al foil)</td>
+					</tr>
+					<tr>
+						<td>Density (<em>&rho;<sub>0</sub></em>)</td>
+						<td>2.7 g / cm<sup>3</sup></td>
+					</tr>
+					<tr>
+						<td>Atomic number (<em>Z</em>)</td>
+						<td>13</td>
+					</tr>
+					<tr>
+						<td>Mass number (<em>A</em>)</td>
+						<td>27</td>
+					</tr>
+					<tr>
+						<td>Ionization Potential (<em>I</em>)</td>
+						<td>0.000006 MeV</td>
+					</tr>
+					<tr>
+						<td>Material thickness</td>
+						<td>1 cm</td>
+					</tr>
+					<tr>
+						<td>Step size</td>
+						<td>0.01 cm<sup>[**]</sup></td>
+					</tr>
+
+					<tr>
+						<td colspan="2">Stopping-Power values for this material</td>
+					</tr>
+					<tr>
+						<td>Gamma (<em>&gamma;</em>)</td>
+						<td>1.106579</td>
+					</tr>
+					<tr>
+						<td>Beta squared (<em>&beta;<sup>2</sup></em>)</td>
+						<td>0.183351</td>
+					</tr>
+					<tr>
+						<td>Maximum kinetic energy transferred (<em>T<sub>max</sub></em>)</td>
+						<td>0.229180 MeV</td>
+					</tr>
+					<tr>
+						<td>Stopping Power (<em>- dE / dx</em>)</td>
+						<td>22.572949 MeV/cm</td>
+					</tr>
+					<tr>
+						<td>Result</td>
+						<td>The particle exits the material with an energy of 77.427051 MeV in 100 steps.</td>
+					</tr>
+					 
+				</tbody>
+
+			</table>
+
+			<p class="footnote">[*] You can make a study in energy dependence changing this value systematically.<br>
+			[**] If more precision is needed, introduce a shorter step size.</p>
+ 			
+
+			<p>If the value of the initial energy is changed, a plot can be made of the dependence of the stopping power with the energy of the incidental particle, or a plot of the energy against the range, like the one below:</p>
+			
+			<img src="{{ site.baseurl }}/img/dosimetry.png" width="673" height="429" alt="Plot of the initial energy against the range">
+			
+
+
+
+			<h3 id="more">More</h3>
+			
+			<p>More about the code in the <a href="http://github.com/{{site.git}}/{{site.repo}}">README file</a>.</p>
+			
+			<p><img src="{{ site.baseurl }}/img/github.svg" width="32" height="32" alt="GitHub icon">
+			<a href="http://github.com/{{ site.git }}/{{ site.repo }}">Check the repo</a>.</p>
+
+			<p><img src="{{ site.baseurl }}/img/twitter.svg" width="32" height="32" alt="Twitter icon">
+			{% include share.html %}</p>
+			
+			<p class="date"><img src="{{ site.baseurl }}/img/clock.svg" width="24" height="24" alt="Calendar icon">        Published: 2004-06-01 15:36</p>
+		
+		</div>

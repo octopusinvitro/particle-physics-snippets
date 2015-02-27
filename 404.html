@@ -1,0 +1,18 @@
+---
+layout: default
+title: "404&#58; Not found"
+description: 404 not found.
+---
+		<div class="wrapper center">
+
+			<h1>{{ page.title }}</h1>
+		
+			<p>Sorry, there's nothing to see here. Try clicking one of the upper or lower links.</p>
+			
+			<p><img src="{{ site.baseurl }}/img/github.svg" width="32" height="32" alt="GitHub icon">
+			<a href="http://github.com/{{ site.git }}/{{ site.repo }}">Check the respository</a>.</p>			
+{% if site.twitter %}
+			<p><img src="{{ site.baseurl }}/img/twitter.svg" width="32" height="32" alt="Twitter icon">
+			<a href="https://twitter.com/{{ site.twitter }}">Check my twitter</a></p>{% endif %}
+
+		</div>

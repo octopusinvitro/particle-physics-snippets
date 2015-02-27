@@ -1,0 +1,18 @@
+---
+layout: default
+---
+		<div class="wrapper center">
+
+			<h1>{{ site.title }}</h1>
+		
+			<img src="img/meeting.png" width="500" height="500" alt="Physics snippets" >
+			
+			<p>Some particle physics snippets for personal reference. Click on the upper menu to check them.</p>
+			
+			<p><img src="img/github.svg" width="32" height="32" alt="GitHub icon">
+			<a href="http://github.com/{{ site.git }}/{{ site.repo }}">Check the respository</a>.</p>			
+{% if site.twitter %}
+			<p><img src="img/twitter.svg" width="32" height="32" alt="Twitter icon">
+			<a href="https://twitter.com/{{ site.twitter }}">Check my twitter</a></p>{% endif %}
+
+		</div>

@@ -1,0 +1,12 @@
+    <div class="wrapper">
+      <p class="footnote">
+        <a href="/">Particle Physics Snippets</a> site is coded and maintained by Octopus in Vitro. <br />
+        You can also find the code on
+        <a href="https://bitbucket.org/{{ site.git }}/{{ site.repo }}">BitBucket</a> and
+        <a href="https://gitlab.com/{{ site.git }}/{{ site.repo }}">GitLab</a>.
+      </p>
+    </div>
+{% if page.prism %}
+    <script src="{{ site.baseurl }}/js/vendor/prism.js"></script>{% endif %}{% if page.mathjax %}
+    <script async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>{% endif %}
+{% include stats.html %}

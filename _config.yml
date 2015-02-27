@@ -1,0 +1,15 @@
+# Site settings
+title:       Particle Physics Snippets
+description: > # this means to ignore newlines until "baseurl:" Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+  Particle Physics Snippets
+baseurl:     "" # the subpath of your site, e.g. /blog/
+url:         "http://ppsnippets.tk" # the base hostname & protocol for your site
+exclude:     [.gitignore, img/meeting_10.ai, img/meeting_10.eps, img/meeting_10.jpg]
+
+# Links
+twitter: octopusinvitro
+git:     octopusinvitro
+repo:    particle-physics-snippets
+
+# Build settings
+markdown: kramdown

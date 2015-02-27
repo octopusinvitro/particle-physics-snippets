@@ -1,0 +1,98 @@
+---
+layout: default
+title: High Energy Ring with win-AGILE
+menuname: HER
+description: A Ring design using AGILE for Windows
+permalink: /her/
+prism: true
+---
+		<div class="wrapper">
+
+			<h1>PEP II</h1>
+			<h2>High Energy Ring</h2>
+
+			<p class="hero">
+				<img src="{{ site.baseurl }}/img/ring.jpg" width="" height="" alt="High Energy Ring">
+			</p>
+
+			<h3>PEP II for electrons (HER)</h3>
+
+			<p>A High Energy Ring was designed using <a href="https://accelconf.web.cern.ch/accelconf/e00/PAPERS/TUP6B03.pdf">Win-AGILE</a>, a tool by P. J. Bryant for lattice design on Windows.</p>
+
+			<p><img src="{{ site.baseurl }}/img/github.svg" width="32" height="32" alt="GitHub icon">
+			<a href="http://github.com/{{ site.git }}/{{ site.repo }}">Check the repo</a>.</p>
+			
+			<h4>Data used:</h4>
+			<ul>
+				<li><strong>192</strong> Dipoles</li>
+				<li><strong>290</strong> Quadrupoles</li>
+				<li>Circunference: <strong>2200 m</strong></li>
+				<li>Electron energy: <strong>8.973 GeV</strong></li>
+				<li>Size of standard cell: <strong>15.2 m</strong></li>
+			</ul>
+
+			<h4>Calculations</h4>
+
+			<p>We first make an estimation of the total number of cells in the ring:
+			<pre><code class="language-markup">2200 / 15.2 = 144.7 cells</code></pre></p>
+
+			<p>Next, we calculate the number of elements per cell:
+			<pre><code class="language-markup">(192 D + 290 Q) / 144.7 = 3.33 elements per cell</code></pre></p>
+
+			<p>The Dipole / Quadrupole ratio is approximately <code class="language-markup">1.5</code>. Since the number of elements per cell is not an integer, instead of taking one cell as a unit, we take 3 cells of <code class="language-markup">15.2 m</code>, where we can fit in 4 Dipoles and 6 Quadrupoles. The number of "<em>triple</em>" cells we have is <code class="language-markup">48</code>.
+			<pre><code class="language-markup">48 x 4 = 192 D
+48 x 6 = 288 Q</code></pre></p>
+
+			<p>We still need to fit in 2 Quadrupoles. We have 47 identical cells and one where we will put the 2 Quadrupoles. Then we make an estimation of the size of each element, taking the proportions used previously as reference:
+			<pre><code class="language-markup">Quadrupoles = 1    Dipoles = 5    Drifts = 10</code></pre></p>
+
+			<p>and we obtain the following values:
+			<pre><code class="language-markup">Q = 0.31 m    D = 1.8 m    Dr = 3.52 m</code></pre></p>
+
+			<p>Now, we calculate the deflection angle:
+			<pre><code class="language-markup">&theta; = 2&pi; / 192 = 0.032725 rad</code></pre></p>
+
+			<p>To calculate the <code class="language-markup">k-quad</code> constant we check the distance between Quadrupoles:
+			<pre><code class="language-markup">d = 3.88 m</code></pre></p>
+
+			<p>Since the condition of stability is <code class="language-markup">f &ge; d / 2</code>:
+			<pre><code class="language-markup">f &ge; 1.94 m</code></pre></p>
+
+			<p>and 
+			<pre><code class="language-markup">f = 1 / kL</code></pre></p>
+
+			<p>then,
+			<pre><code class="language-markup">k &lt; 1 / fL, with L = R&theta;</code></pre></p>
+
+			<p>and we obtain:
+			<pre><code class="language-markup">k = 0.045</code></pre></p>
+
+			<h4>Simulations with Win-AGILE</h4>
+
+			<p>The values obtained from these calculations were introduced in the Win-AGILE simulator using two files:</p>
+			<ul>
+				<li><strong>PEP I</strong>, with 48 identical units, in compressed format</li>
+				<li><strong>PEP II</strong>, with 47 identical units and one different, in decompressed format</li>
+			</ul>
+
+			<p>Since <strong>PEP II</strong> was not working, <strong>PEP I</strong> (all units identical) was used. Some values were changed, like the size of the elements of the lattice, based on the specifications of the real <strong>PEP</strong>, and the value of <code class="language-markup">k</code> for the track to be correct.</p>
+
+			<p>Based on these modifications, the data was recalculated:
+			<pre><code class="language-markup">Q = 0.56 m    D = 3.80 m    Dr = 2.60 m
+&theta; = 2&pi; / 192 = 0.032725 rad
+
+d = 3.16 m
+f &ge; d / 2    &rArr;    f &ge; 1.94 m
+k &lt; 1 / fL, with L = R&theta;
+
+k = 0.0055</code></pre></p>
+
+			<p><img src="{{ site.baseurl }}/img/github.svg" width="32" height="32" alt="GitHub icon">
+			<a href="http://github.com/{{ site.git }}/{{ site.repo }}">Check the repo</a>.</p>
+
+			<p><img src="{{ site.baseurl }}/img/twitter.svg" width="32" height="32" alt="Twitter icon">
+			{% include share.html %}</p>
+			
+			<p class="date"><img src="{{ site.baseurl }}/img/clock.svg" width="24" height="24" alt="Calendar icon">        Published: 2004-05-09 23:43</p>
+			
+		</div>

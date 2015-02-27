@@ -1,0 +1,495 @@
+/*! normalize.css v3.0.1 */html{font-family: sans-serif;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%}body{margin: 0}article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,summary{display: block}audio,canvas,progress,video{display: inline-block;vertical-align: baseline}audio: not([controls]){display: none;height: 0}[hidden],template{display: none}a{background: 0 0}a:active,a:hover{outline: 0}abbr[title]{border-bottom: 1px dotted}b,strong{font-weight: 900}dfn{font-style: italic}h1{font-size: 2em;margin: .67em 0}mark{background: #ff0;color: #000}small{font-size: 80%}sub,sup{font-size: 75%;line-height: 0;position: relative;vertical-align: baseline}sup{top: -.5em}sub{bottom: -.25em}img{border: 0}svg: not(: root){overflow: hidden}figure{margin: 1em 40px}hr{-moz-box-sizing: content-box;box-sizing: content-box;height: 0}pre{overflow: auto}code,kbd,pre,samp{font-family: monospace,monospace;font-size: 1em}button,input,optgroup,select,textarea{color: inherit;font: inherit;margin: 0}button{overflow: visible}button,select{text-transform: none}button,html input[type=button],input[type=reset],input[type=submit]{-webkit-appearance: button;cursor: pointer}button[disabled],html input[disabled]{cursor: default}button::-moz-focus-inner,input::-moz-focus-inner{border: 0;padding: 0}input{line-height: normal}input[type=checkbox],input[type=radio]{box-sizing: border-box;padding: 0}input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{height: auto}input[type=search]{-webkit-appearance: textfield;-moz-box-sizing: content-box;-webkit-box-sizing: content-box;box-sizing: content-box}input[type=search]::-webkit-search-cancel-button,input[type=search]::-webkit-search-decoration{-webkit-appearance: none}fieldset{border: 1px solid silver;margin: 0 2px;padding: .35em .625em .75em}legend{border: 0;padding: 0}textarea{overflow: auto}optgroup{font-weight: 900}table{border-collapse: collapse;border-spacing: 0}td,th{padding: 0} /* Prism */code[class*="language-"],pre[class*="language-"]{color:black;text-shadow:0 1px white;font-family:Consolas,Monaco,'Andale Mono',monospace;direction:ltr;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none}pre[class*="language-"]::-moz-selection,pre[class*="language-"] ::-moz-selection,code[class*="language-"]::-moz-selection,code[class*="language-"] ::-moz-selection{text-shadow:none;background:#b3d4fc}pre[class*="language-"]::selection,pre[class*="language-"] ::selection,code[class*="language-"]::selection,code[class*="language-"] ::selection{text-shadow:none;background:#b3d4fc}@media print{code[class*="language-"],pre[class*="language-"]{text-shadow:none}}pre[class*="language-"]{padding:1em;margin:.5em 0;overflow:auto}:not(pre) > code[class*="language-"],pre[class*="language-"]{background:#f5f2f0}:not(pre) > code[class*="language-"]{padding:.1em;border-radius:.3em}.token.comment,.token.prolog,.token.doctype,.token.cdata{color:slategray}.token.punctuation{color:#999}.namespace{opacity:.7}.token.property,.token.tag,.token.boolean,.token.number,.token.constant,.token.symbol{color:#905}.token.selector,.token.attr-name,.token.string,.token.char,.token.builtin{color:#690}.token.operator,.token.entity,.token.url,.language-css .token.string,.style .token.string,.token.variable{color:#a67f59;background:hsla(0,0%,100%,.5)}.token.atrule,.token.attr-value,.token.keyword{color:#07a}.token.function{color:#DD4A68}.token.regex,.token.important{color:#e90}.token.important{font-weight:bold}.token.entity{cursor:help}
+/*
+	   ALIENS.
+░░░░░░░▀▄░░░▄▀░░░░░░░░	
+░░░░░░▄█▀███▀█▄░░░░░░░
+░░░░░█▀███████▀█░░░░░░
+░░░░░█░█▀▀▀▀▀█░█░░░░░░
+░░░░░░░░▀▀░▀▀░░░░░░░░░ 
+  ALIENS EVERYWHERE
+
+*/
+/*! HTML5 Boilerplate v4.3.0 | MIT License | http: //h5bp.com/ */
+/* ==========================================================================
+   GENERAL
+   ========================================================================== */
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+
+/*blue: #2980b9;*/
+
+body {
+	font: 400 100%/1.4 Arial,'Helvetica Neue', Helvetica, sans-serif;
+	font-family: 'Roboto', sans-serif;
+	color: #555;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	background-color: #fff;
+}
+
+math {
+	font-family: 'Cambria Math', Cambria, MathJax_Main, 
+	             STIXGeneral, DejaVu Serif, DejaVu Sans, 
+	             Times, Lucida Sans Unicode, OpenSymbol,
+	             Standard Symbols L, serif !important;
+}
+
+mfrac {
+	font-size: 1.4em !important;
+}
+
+button,
+input,
+select,
+textarea {
+	color: #555;
+}
+
+::-moz-selection,
+::selection,
+pre[class*="language-"] ::-moz-selection,
+pre[class*="language-"] ::selection,
+code[class*="language-"] ::-moz-selection,
+code[class*="language-"] ::selection,
+pre[class*="language-"]::-moz-selection,
+pre[class*="language-"]::selection,
+code[class*="language-"]::-moz-selection,
+code[class*="language-"]::selection {
+	background: #ddd;
+	text-shadow: none;
+}
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+    padding: 0;
+}
+audio,
+canvas,
+img,
+video {
+    vertical-align: middle;
+}
+fieldset {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+textarea {
+    resize: vertical;
+}
+
+/* ==========================================================================
+   Browse Happy prompt
+   ========================================================================== */
+
+.browsehappy {
+    margin: 0.2em 0;
+    background: #ccc;
+    color: #000;
+    padding: 0.2em 0;
+}
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+.wrapper {
+	padding: 1em;
+}
+h1, h2, h3, h4 {
+	color: #86C6B5;
+	font-family: 'Bree Serif', 'Book Antiqua', Palatino, 'Palatino Linotype', 'Palatino LT STD', Georgia, serif;
+}
+h1, h2 {
+	text-align: center;
+	text-shadow: -.02em .02em 0 #fff,
+				 -.05em .05em 0 #ddd;
+}
+h1 {
+	font-size: 3em;
+	margin: 0;
+	padding:0;
+}
+h2 {
+	font-size: 2.7em;
+	margin-top: 0;
+}
+h3 {
+	font-size: 2em
+}
+h4 {
+	font-size: 1.5em
+}
+img {
+	max-width: 100%;
+	max-height: 100%;
+	width: 100%;
+	height: 100%
+}
+img[alt~="icon"] {
+	width: auto;
+	height: auto;
+}
+
+ul, li {
+	margin: 0;
+    list-style-type: square;
+}
+a, a:link {
+	color: yellowgreen;
+	font-weight: 700;
+	transition:  all .4s ease-out;
+}
+a:hover, a:active, a:visited {
+	color: orange;
+}
+
+.token.operator {
+	background-color:transparent;
+}
+
+pre,
+code {
+	font-size: .9em;
+	border-radius: .2em;
+	white-space: pre-wrap;
+}
+nav {
+	padding:.3em 0 1em;
+}
+
+pre,
+code,
+:not(pre) > code[class*="language-"], pre[class*="language-"],
+nav {
+	background: hsl(24, 20%, 95%) url('noise.png') repeat left top;
+}
+
+.center,
+table,
+pre.language-markup,
+nav {
+	text-align: center;
+}
+
+.zigzag {
+	position:relative;
+}
+
+.zigzag:before {
+    content: "";
+    position: absolute;
+    bottom: 0; left: 0px; right: 0px; 
+    height: .5em;
+    background-size: 1em 2em;
+    background-repeat: repeat-x;
+    background-image: 
+		linear-gradient( 45deg, transparent 34%, #fff 34%, #fff 66%, transparent 66%), 
+		linear-gradient(135deg, transparent 34%, #fff 34%, #fff 66%, transparent 66%);
+}
+
+.menu-icon {
+	display: block;
+	margin: auto;
+	width: 2.2em;
+	height: 1.6em;
+	line-height: 0;
+	padding-top: .8em;
+}
+.menu-icon svg {
+	width: 1.2em;
+	height: .9em;
+}
+.menu-icon path {
+	fill: #000;
+}
+
+.navigation {
+	padding-left: 0;
+	max-height: 0;
+	overflow: hidden;
+	transition: max-height 1s;
+}
+.menu-icon:hover ~ .navigation,
+.navigation:hover {
+	max-height: 30em;
+}
+
+.navigation li {
+	list-style-type: none;
+	padding: .5em 0;
+}
+.navigation span {
+	color: hsl(24, 20%, 95%);
+}
+.navigation li:nth-of-type(4) span {
+	display: none;
+}
+
+table {
+	width: 100%;
+}
+
+thead {
+	background-color: #efefef;
+}
+tr:nth-of-type(2n) {
+	background-color: rgba(240,240,240,.5);
+}
+
+th, td {
+	padding: .5em;
+	margin: 0
+}
+
+td[colspan="2"] {
+	font-weight: 700;
+	font-style: italic;
+}
+
+.zigzag th {
+	padding-bottom:1em;
+}
+.footnote {
+
+	font-size: .8em;
+	font-style: italic;
+	color: #555;
+	border-left: .3em solid #ddd;
+	margin-left:1em;
+	padding-left: 1em;
+}
+.footnote em {
+	font-weight: 700;
+}
+
+.date {
+	/*font-weight: bold;*/
+	color: #E84C3D;
+	color: #86C6B5;
+	border-top: .1em solid;
+	padding-top: .5em
+}
+.date img {
+	background-color: #86C6B5;
+	border-radius: 50% 0 50% 50%;
+	padding: .5em
+}
+/* ==========================================================================
+   Helper classes
+   ========================================================================== */
+.ir {
+    background-color: transparent;
+    border: 0;
+    overflow: hidden;
+    /* IE 6/7 fallback */
+    *text-indent: -9999px;
+}
+
+.ir:before {
+    content: "";
+    display: block;
+    width: 0;
+    height: 150%;
+}
+
+/*
+ * Hide from both screenreaders and browsers: h5bp.com/u
+ */
+
+.hidden {
+    display: none !important;
+    visibility: hidden;
+}
+
+/*
+ * Hide only visually, but have it available for screenreaders: h5bp.com/v
+ */
+
+.visuallyhidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+
+/*
+ * Extends the .visuallyhidden class to allow the element to be focusable
+ * when navigated to via the keyboard: h5bp.com/p
+ */
+
+.visuallyhidden.focusable:active,
+.visuallyhidden.focusable:focus {
+    clip: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    position: static;
+    width: auto;
+}
+
+/*
+ * Hide visually and from screenreaders, but maintain layout
+ */
+
+.invisible {
+    visibility: hidden;
+}
+
+.clearfix:before,
+.clearfix:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+.clearfix {
+    *zoom: 1;
+}
+
+/* ==========================================================================
+   EXAMPLE Media Queries for Responsive Design.
+   These examples override the primary ('mobile first') styles.
+   Modify as content requires.
+   ========================================================================== */
+
+@media only screen and (min-width: 35em) {
+	body {
+		font-size:120%;
+	}
+	.wrapper {
+		padding: 3em;
+	}
+	.menu-icon {
+		display: none;
+	}
+	.navigation {
+		max-height: 100%;
+		overflow: visible;
+		transition: none;
+	}
+	.navigation li {
+		display: inline;
+	}
+	.navigation span {
+		color: inherit;
+		margin: 0 1em;
+	}
+	h1 {
+		font-size: 3.5em;
+	}
+	h2 {
+		font-size: 2.5em;
+	}
+	.hero {
+		text-align: center;
+	}
+	img {
+		width: auto;
+		height: auto;
+	}
+}
+@media only screen and (min-width: 55em) {
+	.wrapper {
+		width:40em;
+		margin:auto;
+	}
+	h1 {
+		font-size: 5em;
+	}
+	h2 {
+		font-size: 3em;
+	}
+}
+
+@media print,
+       (-o-min-device-pixel-ratio: 5/4),
+       (-webkit-min-device-pixel-ratio: 1.25),
+       (min-resolution: 120dpi) {
+    /* Style adjustments for high resolution devices */
+}
+
+/* ==========================================================================
+   Print styles.
+   Inlined to avoid required HTTP connection: h5bp.com/r
+   ========================================================================== */
+
+@media print {
+    * {
+        background: transparent !important;
+        color: #000 !important; /* Black prints faster: h5bp.com/s */
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+    a,
+    a:visited {
+        text-decoration: underline;
+    }
+
+    a[href]:after {
+        content: " (" attr(href) ")";
+    }
+
+    abbr[title]:after {
+        content: " (" attr(title) ")";
+    }
+
+    /*
+     * Don't show links for images, or javascript/internal links
+     */
+
+    .ir a:after,
+    a[href^="javascript:"]:after,
+    a[href^="#"]:after {
+        content: "";
+    }
+
+    pre,
+    blockquote {
+        border: 1px solid #999;
+        page-break-inside: avoid;
+    }
+
+    thead {
+        display: table-header-group; /* h5bp.com/t */
+    }
+
+    tr,
+    img {
+        page-break-inside: avoid;
+    }
+
+    img {
+        max-width: 100% !important;
+    }
+
+    @page {
+        margin: 0.5cm;
+    }
+
+    p,
+    h2,
+    h3 {
+        orphans: 3;
+        widows: 3;
+    }
+
+    h2,
+    h3 {
+        page-break-after: avoid;
+    }
+}

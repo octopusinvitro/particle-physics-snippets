@@ -1,0 +1,16 @@
+		<!--[if lt IE 7]>
+			<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+		<![endif]-->
+
+		<nav role="navigation" class="zigzag">
+			<a href="#" class="menu-icon">
+				<img src="{{ site.baseurl }}/img/hamburger.svg" width="18" height="15" alt="Hamburger icon">
+			</a>
+
+			<ul class="navigation">
+				<li><a href="{{ site.baseurl }}/">Home</a> <span>|</span> </li>
+{% for page in site.pages %}{% if page.menuname %}
+				<li><a href="{{ page.url | prepend: site.baseurl }}">{{ page.menuname }}</a> <span>|</span> </li>
+{% endif %}{% endfor %}
+			</ul>
+		</nav>
